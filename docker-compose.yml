@@ -5,13 +5,13 @@ services:
     build:
       context: .
       dockerfile: Analytics.API/Dockerfile
-    container_name: analytics-api
+    container_name: ${COMPOSE_PROJECT_NAME}-api
     ports:
-      - "8080:8080"
+      - "${API_PORT}:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=analytics;Username=postgres;Password=dev123
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - Redis__Host=redis
       - RabbitMQ__Host=rabbitmq
     depends_on:
@@ -21,32 +21,32 @@ services:
 
   postgres:
     image: postgres:16
-    container_name: analytics-db
+    container_name: ${COMPOSE_PROJECT_NAME}-db
     restart: always
     environment:
-      POSTGRES_DB: analytics
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: dev123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
   redis:
     image: redis:7
-    container_name: analytics-redis
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:6379"
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: analytics-rabbitmq
+    container_name: ${COMPOSE_PROJECT_NAME}-rabbitmq
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "${RABBITMQ_NODE_PORT}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT}:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
 
 volumes:
   pgdata:
