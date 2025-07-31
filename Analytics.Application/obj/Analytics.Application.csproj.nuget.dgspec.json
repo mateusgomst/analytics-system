@@ -1,0 +1,142 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Application\\Analytics.Application.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Application\\Analytics.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Application\\Analytics.Application.csproj",
+        "projectName": "Analytics.Application",
+        "projectPath": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Application\\Analytics.Application.csproj",
+        "packagesPath": "C:\\Users\\mateus.tcastro\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\mateus.tcastro\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Domain\\Analytics.Domain.csproj": {
+                "projectPath": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Domain\\Analytics.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[15.0.1, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[13.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.412/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Domain\\Analytics.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Domain\\Analytics.Domain.csproj",
+        "projectName": "Analytics.Domain",
+        "projectPath": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Domain\\Analytics.Domain.csproj",
+        "packagesPath": "C:\\Users\\mateus.tcastro\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\mateus.tcastro\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.412/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
