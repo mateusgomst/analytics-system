@@ -37,7 +37,7 @@ Siga os passos abaixo para configurar e rodar a aplicação em seu ambiente loca
 
 Antes de começar, garanta que você tenha as seguintes ferramentas instaladas:
 
-* [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (ou a versão utilizada no projeto)
+* [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) - **Necessário** para adicionar dependências e rodar benchmarks
 * [Docker](https://www.docker.com/products/docker-desktop/) e [Docker Compose](https://docs.docker.com/compose/install/)
 * [Git](https://git-scm.com/downloads/)
 * (Opcional, para testes de carga) [k6](https://k6.io/docs/getting-started/installation/)
@@ -80,11 +80,27 @@ Após a execução do comando, os serviços estarão disponíveis nos seguintes 
 | **PostgreSQL** | `localhost:5432` | Use um cliente de DB (DBeaver, DataGrip). |
 | **Redis** | `localhost:6379` | Use um cliente de Redis (RedisInsight). |
 
-### 5. Executando Benchmarks de Performance (Localmente)
+### 5. Adicionando Dependências
 
-**Importante:** Os benchmarks rodam diretamente na sua máquina (fora dos contêineres do Docker) para obter medições de performance precisas do seu hardware. Por isso, você precisa ter o **.NET SDK instalado localmente**.
+Para adicionar novas dependências (pacotes NuGet), você precisa fazer localmente e depois rebuildar:
 
-Para executar os testes, rode o seguinte comando a partir da **raiz do projeto**:
+```bash
+# Exemplo: adicionar uma dependência no projeto Domain
+dotnet add Analytics.Domain package FluentValidation
+
+# Ou adicionar referência entre projetos
+dotnet add Analytics.API reference Analytics.Application
+dotnet add Analytics.Application reference Analytics.Domain
+dotnet add Analytics.Infrastructure reference Analytics.Domain
+dotnet add Analytics.API reference Analytics.Infrastructure
+
+# Depois rebuildar os contêineres
+docker compose up -d --build
+```
+
+### 6. Executando Benchmarks de Performance
+
+Para rodar os benchmarks de performance:
 
 ```bash
 dotnet run -c Release --project Analytics.Benchmarks
@@ -92,7 +108,7 @@ dotnet run -c Release --project Analytics.Benchmarks
 
 O BenchmarkDotNet irá compilar e executar os cenários de teste, exibindo uma tabela detalhada com os resultados de performance no final.
 
-### 6. Executando Testes de Carga (k6)
+### 7. Executando Testes de Carga (k6)
 
 Para validar a performance da API sob estresse, você pode usar os scripts do k6 localizados na pasta `tests/load-tests`.
 
@@ -104,7 +120,7 @@ cd tests/load-tests
 k6 run relatorio-vendas-mensais.js
 ```
 
-### 7. Parando a Aplicação
+### 8. Parando a Aplicação
 
 Para parar todos os contêineres, utilize o comando:
 
@@ -137,12 +153,12 @@ docker compose down -v
 ## 📦 Estrutura do Projeto
 
 ```
-/src
-├── API                     # Ponto de entrada HTTP, expõe os endpoints.
-├── Application             # Casos de uso e lógica de orquestração.
-├── Domain                  # O coração do sistema: entidades e regras de negócio.
-├── Infrastructure          # Implementações de serviços externos e acesso a dados.
-├── Benchmarks              # Testes de performance com BenchmarkDotNet.
-/tests
-└── load-tests              # Scripts para testes de carga com k6.
+/
+├── Analytics.API/              # Ponto de entrada HTTP, expõe os endpoints.
+├── Analytics.Application/      # Casos de uso e lógica de orquestração.
+├── Analytics.Domain/           # O coração do sistema: entidades e regras de negócio.
+├── Analytics.Infrastructure/   # Implementações de serviços externos e acesso a dados.
+├── Analytics.Benchmarks/       # Testes de performance com BenchmarkDotNet.
+└── tests/
+    └── load-tests/             # Scripts para testes de carga com k6.
 ```
