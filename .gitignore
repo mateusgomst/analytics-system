@@ -1,1 +1,10 @@
 .env
+
+# Ignorar arquivos gerados automaticamente pelo BenchmarkDotNet
+# BenchmarkDotNet artifacts and results
+BenchmarkDotNet.Artifacts/
+*.benchmarks.*
+*.log
+*.csv
+*.html
+*.md
