@@ -87,7 +87,7 @@ Após a execução do comando, os serviços estarão disponíveis nos seguintes 
 Para executar os testes, rode o seguinte comando a partir da **raiz do projeto**:
 
 ```bash
-dotnet run -c Release --project ./src/Benchmarks/Analytics.Benchmarks.csproj
+dotnet run -c Release --project Analytics.Benchmarks
 ```
 
 O BenchmarkDotNet irá compilar e executar os cenários de teste, exibindo uma tabela detalhada com os resultados de performance no final.
