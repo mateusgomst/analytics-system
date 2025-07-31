@@ -11,4 +11,11 @@
     <PackageReference Include="BenchmarkDotNet" Version="0.15.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Analytics.API\Analytics.API.csproj" />
+    <ProjectReference Include="..\Analytics.Application\Analytics.Application.csproj" />
+    <ProjectReference Include="..\Analytics.Infrastructure\Analytics.Infrastructure.csproj" />
+    <ProjectReference Include="..\Analytics.Domain\Analytics.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
