@@ -250,6 +250,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Application\\Analytics.Application.csproj": {
+                "projectPath": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Application\\Analytics.Application.csproj"
+              },
               "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Domain\\Analytics.Domain.csproj": {
                 "projectPath": "C:\\Users\\mateus.tcastro\\Desktop\\AnalyticsSystem\\Analytics.Domain\\Analytics.Domain.csproj"
               }
