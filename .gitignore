@@ -8,3 +8,32 @@ BenchmarkDotNet.Artifacts/
 *.csv
 *.html
 *.md
+# Build artifacts
+bin/
+obj/
+
+# Don't commit DLLs, PDBs, EXEs, etc.
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+# .NET build-generated JSON files
+project.lock.json
+project.assets.json
+*.runtimeconfig.dev.json
+
+# Build results
+bin/
+obj/
+
+# Cache
+*.cache
+*.tmp
+.vs/
+.vscode/
+project.lock.json
+project.assets.json
+*.user
+*.suo

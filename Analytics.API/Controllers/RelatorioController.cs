@@ -18,4 +18,5 @@ public class RelatorioController : ControllerBase
         var relatorio = await _vendaRepository.ObterRelatorioMensalAsync(ano);
         return Ok(relatorio);
     }
+    
 }

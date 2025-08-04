@@ -1,6 +1,8 @@
 using Analytics.Application.DTOs;
 using Analytics.Application.Repositories;
+using Analytics.Domain.Entities;
 using Analytics.Infrastructure.Context;
+using FluentValidation.Validators;
 using Microsoft.EntityFrameworkCore;
 
 public class VendaRepository : IVendaRepository
@@ -23,5 +25,13 @@ public class VendaRepository : IVendaRepository
                 TotalVendas = g.Sum(v => v.Valor)
             })
             .ToListAsync();
+    }
+
+    public async Task<VendaDto> AdcionarNovaVenda(VendaDto novaVenda)
+    {
+        Venda venda = new Venda(novaVenda.Valor, novaVenda.Produto);
+        await _context.Vendas.AddAsync(venda);
+        await _context.SaveChangesAsync();
+        return novaVenda;
     }
 }
