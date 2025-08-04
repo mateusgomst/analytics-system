@@ -1,14 +1,27 @@
 using Analytics.Application.Repositories;
 using Analytics.Infrastructure.Context;
+using Analytics.Infrastructure.Messaging.RabbitMQ.Config;
 using Microsoft.EntityFrameworkCore;
+
+// Não precisamos mais do Env.Load(), pois o Docker-Compose já define as variáveis.
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Adiciona serviços ao contêiner.
-builder.Services.AddControllers(); // Necessário para que a aplicação reconheça os seus Controllers
+builder.Services.AddControllers(); 
 builder.Services.AddScoped<IVendaRepository, VendaRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// --- Configuração do RabbitMQ ---
+// Esta linha agora funciona perfeitamente. O .NET vai ler a variável de ambiente
+// "RabbitMQ__Host" do docker-compose e vai mapeá-la para a propriedade "HostName" da classe RabbitMQSettings.
+builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
+
+// A injeção da conexão continua igual.
+builder.Services.AddSingleton<RabbitMQConnection>();
+// --- Fim da Configuração ---
+
 
 // Adiciona a injeção de dependência para o DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -25,7 +38,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization(); // Essencial para gerenciar a autorização nas requisições
-app.MapControllers(); // Mapeia os endpoints dos seus Controllers
+app.UseAuthorization(); 
+app.MapControllers(); 
 
 app.Run();

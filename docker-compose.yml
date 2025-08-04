@@ -13,7 +13,12 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - Redis__Host=redis
-      - RabbitMQ__Host=rabbitmq
+      # --- CORREÇÃO APLICADA AQUI ---
+      # A variável agora é RabbitMQ__HostName para corresponder à propriedade na classe C#.
+      - RabbitMQ__HostName=${RABBITMQ_HOST} 
+      - RabbitMQ__UserName=${RABBITMQ_USER}
+      - RabbitMQ__Password=${RABBITMQ_PASS}
+      - RabbitMQ__Port=${RABBITMQ_NODE_PORT}
     depends_on:
       - postgres
       - redis
