@@ -6,7 +6,7 @@
 
 ## 🎯 Sobre o Projeto
 
-Este projeto é uma **API de alta performance** desenvolvida para coletar, processar e servir grandes volumes de dados de forma eficiente. Com foco em **consultas rápidas, filtragem e cruzamento de informações**, ela simula um sistema de Business Intelligence (BI) simplificado, ideal para cenários onde a velocidade e a baixa latência são cruciais.
+Este projeto é uma **API de alta performance** desenvolvida para coletar, processar e servir grandes volumes de dados de forma eficiente. Construída com os princípios de **Clean Architecture**, o projeto garante alta testabilidade, separação de responsabilidades e fácil manutenção, tornando-o ideal para cenários onde a velocidade e a baixa latência são cruciais.
 
 ### 💡 Casos de Uso e Aplicações Práticas
 
@@ -114,23 +114,21 @@ docker compose down -v
 | **Cache** | **Redis** |
 | **Testes de Performance** | **BenchmarkDotNet**, **k6** |
 | **Monitoramento** | **Serilog**, **Application Insights** ou **Seq** |
-| **Arquitetura** | **CQRS**, **Programação Assíncrona**, **Microserviços** (opcional) |
+| **Arquitetura** | **Clean Architecture**, **CQRS**, **Programação Assíncrona** |
 
 -----
 
 ## 📦 Estrutura do Projeto
 
+O projeto segue os princípios da **Clean Architecture**, com uma clara separação de responsabilidades para garantir a manutenção e a escalabilidade.
+
 ```
 /
 ├── Analytics.API/             # Ponto de entrada HTTP, expõe os endpoints.
-├── Analytics.Application/     # Casos de uso e lógica de orquestração.
-├── Analytics.Domain/          # O coração do sistema: entidades e regras de negócio.
-├── Analytics.Infrastructure/  # Implementações de serviços externos e acesso a dados.
+├── Analytics.Application/     # Camada de orquestração e casos de uso, livre de dependências externas.
+├── Analytics.Domain/          # O coração do sistema: entidades e regras de negócio (independente de outras camadas).
+├── Analytics.Infrastructure/  # Implementações de serviços externos e acesso a dados (banco, cache, etc.).
 ├── Analytics.Benchmarks/      # Testes de performance com BenchmarkDotNet.
 └── tests/
     └── load-tests/          # Scripts para testes de carga com k6.
 ```
-
------
-
-O que você achou das sugestões? As alterações mantêm o foco na sua arquitetura, mas apresentam os casos de uso de forma mais integrada à proposta do projeto. Se quiser, podemos explorar mais detalhes sobre um dos exemplos ou focar em alguma outra seção específica.
