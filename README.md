@@ -9,7 +9,6 @@
 
 Projetado para cenários onde o tempo de resposta é crítico, o sistema permite desde análises simples até **consultas avançadas**, **alertas dinâmicos**, e **relatórios em tempo real**.
 
----
 
 ## 💡 Casos de Uso e Aplicações
 
@@ -58,7 +57,7 @@ A flexibilidade do sistema permite que ele seja aplicado em diferentes contextos
 | **Regras de Alertas Customizadas** | Avaliação periódica de métricas e geração automática de alertas. |
 | **Indexação Estratégica**  | Uso eficiente de índices e filtros no PostgreSQL para consultas de alta performance. |
 
----
+
 
 ## 🚀 Guia de Execução
 
@@ -121,7 +120,7 @@ docker compose down
 docker compose down -v
 ```
 
----
+
 
 ## 🧠 Tecnologias e Arquitetura
 
