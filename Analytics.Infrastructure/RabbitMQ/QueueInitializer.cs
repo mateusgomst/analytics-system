@@ -31,7 +31,7 @@ namespace Analytics.Infrastructure.Messaging
                 autoDelete: false
             );
 
-            _logger.LogInformation("✅ Fila '{Queue}' criada/verificada com sucesso.", QueueNames.VendasNormal);
+            _logger.LogInformation("Fila '{Queue}' criada/verificada com sucesso.", QueueNames.VendasNormal);
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
