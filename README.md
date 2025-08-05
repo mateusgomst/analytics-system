@@ -1,4 +1,3 @@
-Olá! Formatei seu conteúdo para um README claro e profissional. A versão corrigida resolve os problemas de formatação e organiza o texto para facilitar a leitura.
 
 📊 Analytics-System: Plataforma de Análise de Dados, Métricas e Eventos em Tempo Real
 🎯 Sobre o Projeto
