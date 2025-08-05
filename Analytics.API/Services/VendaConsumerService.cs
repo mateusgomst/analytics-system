@@ -28,22 +28,35 @@ namespace Analytics.API.Services
         {
             _logger.LogInformation("Iniciando consumo da fila '{Queue}'...", QueueNames.VendasNormal);
 
-            await using var channel = await _connection.CreateChannelAsync();
-
+            var channel = await _connection.CreateChannelAsync(); 
             var consumer = new AsyncEventingBasicConsumer(channel);
+
             consumer.ReceivedAsync += async (_, ea) =>
             {
                 var json = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var venda = JsonSerializer.Deserialize<VendaDto>(json);
+                _logger.LogInformation("Mensagem recebida: {Json}", json);
 
-                if (venda != null)
+                try
                 {
-                    using var scope = _serviceProvider.CreateScope();
-                    var repo = scope.ServiceProvider.GetRequiredService<IVendaRepository>();
-                    await repo.AdcionarNovaVenda(venda);
-                }
+                    var venda = JsonSerializer.Deserialize<VendaDto>(json);
+                    if (venda != null)
+                    {
+                        using var scope = _serviceProvider.CreateScope();
+                        var repo = scope.ServiceProvider.GetRequiredService<IVendaRepository>();
+                        await repo.AdcionarNovaVenda(venda);
+                        _logger.LogInformation("Venda salva no banco com sucesso.");
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Falha ao desserializar venda: {Json}", json);
+                    }
 
-                await channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+                    await channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Erro ao processar mensagem.");
+                }
             };
 
             await channel.BasicConsumeAsync(
@@ -51,7 +64,11 @@ namespace Analytics.API.Services
                 autoAck: false,
                 consumer: consumer
             );
+
+            // Mantém o serviço rodando até o token ser cancelado
+            await Task.Delay(Timeout.Infinite, stoppingToken);
         }
+
 
     }
 }
