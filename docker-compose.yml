@@ -13,16 +13,17 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
       - Redis__Host=redis
-      # --- CORREÇÃO APLICADA AQUI ---
-      # A variável agora é RabbitMQ__HostName para corresponder à propriedade na classe C#.
-      - RabbitMQ__HostName=${RABBITMQ_HOST} 
+      - RabbitMQ__HostName=${RABBITMQ_HOST}
       - RabbitMQ__UserName=${RABBITMQ_USER}
       - RabbitMQ__Password=${RABBITMQ_PASS}
       - RabbitMQ__Port=${RABBITMQ_NODE_PORT}
     depends_on:
-      - postgres
-      - redis
-      - rabbitmq
+      postgres:
+        condition: service_started # O PostgreSQL geralmente não precisa de healthcheck complexo para "ready"
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy # <-- A API só iniciará quando o RabbitMQ estiver saudável
 
   postgres:
     image: postgres:16
@@ -44,7 +45,7 @@ services:
       - "${REDIS_PORT}:6379"
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3-management # Imagem com plugin de gerenciamento
     container_name: ${COMPOSE_PROJECT_NAME}-rabbitmq
     ports:
       - "${RABBITMQ_NODE_PORT}:5672"
@@ -52,6 +53,12 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    healthcheck: # <-- Adicionado healthcheck para o RabbitMQ
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"] # Comando para verificar a conectividade da porta AMQP
+      interval: 5s # Frequência da verificação
+      timeout: 10s # Tempo limite para o comando
+      retries: 5 # Número de tentativas antes de considerar o serviço unhealthy
+      start_period: 20s # Período inicial para o serviço se estabilizar antes de começar as verificações
 
 volumes:
   pgdata:
