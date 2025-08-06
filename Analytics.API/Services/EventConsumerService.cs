@@ -11,13 +11,13 @@ using System.Text.Json;
 
 namespace Analytics.API.Services
 {
-    public class VendaConsumerService : BackgroundService
+    public class EventConsumerService : BackgroundService
     {
         private readonly IConnection _connection;
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<VendaConsumerService> _logger;
+        private readonly ILogger<EventConsumerService> _logger;
 
-        public VendaConsumerService(IConnection connection, IServiceProvider serviceProvider, ILogger<VendaConsumerService> logger)
+        public EventConsumerService(IConnection connection, IServiceProvider serviceProvider, ILogger<EventConsumerService> logger)
         {
             _connection = connection;
             _serviceProvider = serviceProvider;
@@ -26,7 +26,7 @@ namespace Analytics.API.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Iniciando consumo da fila '{Queue}'...", QueueNames.VendasNormal);
+            _logger.LogInformation("Iniciando consumo da fila '{Queue}'...", QueueNames.Events);
 
             var channel = await _connection.CreateChannelAsync(); 
             var consumer = new AsyncEventingBasicConsumer(channel);
@@ -38,17 +38,17 @@ namespace Analytics.API.Services
 
                 try
                 {
-                    var venda = JsonSerializer.Deserialize<VendaDto>(json);
-                    if (venda != null)
+                    var evento = JsonSerializer.Deserialize<EventDto>(json);
+                    if (evento != null)
                     {
                         using var scope = _serviceProvider.CreateScope();
-                        var repo = scope.ServiceProvider.GetRequiredService<IVendaRepository>();
-                        await repo.AdcionarNovaVenda(venda);
-                        _logger.LogInformation("Venda salva no banco com sucesso.");
+                        var repo = scope.ServiceProvider.GetRequiredService<IEventRepository>();
+                        await repo.NewEvent(evento);
+                        _logger.LogInformation("Evento salvo no banco com sucesso.");
                     }
                     else
                     {
-                        _logger.LogWarning("Falha ao desserializar venda: {Json}", json);
+                        _logger.LogWarning("Falha ao desserializar evento: {Json}", json);
                     }
 
                     await channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
@@ -60,7 +60,7 @@ namespace Analytics.API.Services
             };
 
             await channel.BasicConsumeAsync(
-                queue: QueueNames.VendasNormal,
+                queue: QueueNames.Events,
                 autoAck: false,
                 consumer: consumer
             );

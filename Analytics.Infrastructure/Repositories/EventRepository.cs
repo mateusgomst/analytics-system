@@ -24,7 +24,8 @@ public class EventRepository : IEventRepository
 
     public async Task<List<Event>> GetAllEvents()
     {
-        List<Event> allEvents = await _context.Events.ToListAsync();
-        return allEvents;
+        return await _context.Events
+            .OrderByDescending(e => e.Timestamp) 
+            .ToListAsync();
     }
 }

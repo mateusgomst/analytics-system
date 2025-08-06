@@ -6,7 +6,7 @@ namespace Analytics.Domain.Entities;
 public class Event
 {
     //Id, EventType, Timestamp, Payload, UserId
-    public Event(string eventType, string payload, string userId)
+    public Event(string eventType, Dictionary<string, Object> payload, string userId)
     {
         this.EventType = eventType;
         this.Timestamp = DateTime.UtcNow;
@@ -16,7 +16,7 @@ public class Event
     public Guid Id { get; set; } = Guid.NewGuid();
     public string EventType { get; set; }
     public DateTime Timestamp { get; set; }
-    public string Payload { get; set; }
+    public Dictionary<string, Object> Payload { get; set; }
     public string UserId { get; set; }
 
 

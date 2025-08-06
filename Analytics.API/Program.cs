@@ -14,8 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Adiciona serviços ao contêiner.
 builder.Services.AddControllers();
-builder.Services.AddScoped<IVendaRepository, VendaRepository>(); // Registro do Repositório
-builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();// Registro do Repositório
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -55,8 +54,8 @@ builder.Services.AddSingleton<IConnection>(sp =>
 // 5. Registro da implementação de IMessageBus
 builder.Services.AddSingleton<IMessageBus, RabbitMqMessageBus>();
 
-// 6. Registro do BackgroundService (VendaConsumerService)
-builder.Services.AddHostedService<VendaConsumerService>();
+// 6. Registro do BackgroundService (EventConsumerService)
+builder.Services.AddHostedService<EventConsumerService>();
 
 // --- Fim da Configuração RabbitMQ ---
 

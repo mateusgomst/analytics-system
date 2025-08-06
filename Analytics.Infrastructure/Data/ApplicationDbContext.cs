@@ -1,32 +1,26 @@
-using Analytics.Domain.Entities; // Adicione esta referência para acessar as entidades do domínio
+using Analytics.Domain.Entities;
+using Analytics.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Analytics.Infrastructure.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        // Construtor necessário para o Entity Framework Core
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        // Defina os DbSet para as suas entidades do domínio
-        public DbSet<Venda> Vendas { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<AggregatedMetric> AggregatedMetrics { get; set; }
         public DbSet<AlertRule> AlertRules { get; set; }
-    
-  
-        // Opcional: Sobrescrever o método OnModelCreating para configurar o modelo
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new EventConfiguration());
+        
+            
             base.OnModelCreating(modelBuilder);
-
-            // Exemplo de configuração de entidade, se necessário
-            modelBuilder.Entity<Venda>()
-                .Property(v => v.Valor)
-                .HasColumnType("decimal(18,2)");
         }
     }
 }

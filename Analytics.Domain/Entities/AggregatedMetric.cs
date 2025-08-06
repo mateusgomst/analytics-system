@@ -2,6 +2,7 @@ namespace Analytics.Domain.Entities;
 
 public class AggregatedMetric
 {
+    public AggregatedMetric() { }
     //Id, MetricName, Timestamp, Value, Filters
     public Guid Id { get; set; } = Guid.NewGuid();
     public string MetricName { get; set; }

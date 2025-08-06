@@ -25,7 +25,7 @@ public class EventController : ControllerBase
     public async Task<IActionResult> NewEvent([FromBody] EventDto eventDto)
     {
         Event newEvent = await _eventRepository.NewEvent(eventDto);
-        return Ok(newEvent);
+        return Accepted(newEvent);
     }
    
 }

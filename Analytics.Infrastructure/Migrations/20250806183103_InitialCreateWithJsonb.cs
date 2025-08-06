@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Analytics.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialAnalyticsSystem : Migration
+    public partial class InitialCreateWithJsonb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,15 +49,30 @@ namespace Analytics.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    EventType = table.Column<string>(type: "text", nullable: false),
+                    EventType = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Payload = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                    payload = table.Column<string>(type: "jsonb", nullable: false),
+                    UserId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_EventType",
+                table: "Events",
+                column: "EventType");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_Timestamp",
+                table: "Events",
+                column: "Timestamp");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_UserId",
+                table: "Events",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -71,9 +86,6 @@ namespace Analytics.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
-
-            migrationBuilder.AlterDatabase()
-                .OldAnnotation("Npgsql:PostgresExtension:hstore", ",,");
         }
     }
 }

@@ -23,15 +23,15 @@ namespace Analytics.Infrastructure.Messaging
 
             await using var channel = await _connection.CreateChannelAsync();
 
-            // Cria a fila de vendas normal
+            // Cria a fila de events
             await channel.QueueDeclareAsync(
-                queue: QueueNames.VendasNormal,
+                queue: QueueNames.Events,
                 durable: true,
                 exclusive: false,
                 autoDelete: false
             );
 
-            _logger.LogInformation("Fila '{Queue}' criada/verificada com sucesso.", QueueNames.VendasNormal);
+            _logger.LogInformation("Fila '{Queue}' criada/verificada com sucesso.", QueueNames.Events);
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
