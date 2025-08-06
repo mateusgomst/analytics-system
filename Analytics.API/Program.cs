@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Adiciona serviços ao contêiner.
 builder.Services.AddControllers();
 builder.Services.AddScoped<IVendaRepository, VendaRepository>(); // Registro do Repositório
+builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

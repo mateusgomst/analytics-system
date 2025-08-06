@@ -13,14 +13,16 @@ namespace Analytics.Infrastructure.Context
 
         // Defina os DbSet para as suas entidades do domínio
         public DbSet<Venda> Vendas { get; set; }
-        // public DbSet<Cliente> Clientes { get; set; }
-        // etc.
-
+        public DbSet<Event> Events { get; set; }
+        public DbSet<AggregatedMetric> AggregatedMetrics { get; set; }
+        public DbSet<AlertRule> AlertRules { get; set; }
+    
+  
         // Opcional: Sobrescrever o método OnModelCreating para configurar o modelo
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             // Exemplo de configuração de entidade, se necessário
             modelBuilder.Entity<Venda>()
                 .Property(v => v.Valor)
