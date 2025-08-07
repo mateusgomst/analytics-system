@@ -88,6 +88,27 @@ Cliente → POST /events → Analytics API → RabbitMQ → Worker → PostgreSQ
                       GET /analytics/*
 ```
 
+### Arquitetura Clean Architecture
+
+O projeto segue os princípios da **Clean Architecture**, garantindo baixo acoplamento, alta coesão e testabilidade:
+
+```
+/
+├── Analytics.API/             # Ponto de entrada HTTP, expõe os endpoints.
+├── Analytics.Application/     # Casos de uso e orquestração (sem dependências externas).
+├── Analytics.Domain/          # Entidades, regras de negócio e contratos.
+├── Analytics.Infrastructure/  # Acesso a banco, Redis, RabbitMQ, serviços externos.
+├── Analytics.Benchmarks/      # Benchmarks de performance com BenchmarkDotNet.
+└── tests/
+    └── load-tests/            # Scripts de carga (ex: simulações com k6).
+```
+
+**Princípios Aplicados:**
+- **Inversão de Dependência**: Camadas externas dependem das internas
+- **Separação de Responsabilidades**: Cada camada tem função específica
+- **Testabilidade**: Dependências injetadas permitem mocks e testes isolados
+- **Independência de Framework**: Regras de negócio não dependem de tecnologia específica
+
 ### Estratégias de Performance
 
 | Estratégia | Implementação | Benefício |
