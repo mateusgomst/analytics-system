@@ -1,8 +1,10 @@
+using System.Text.Json;
+
 namespace Analytics.Application.DTOs;
 
 public class EventDto
 {
     public string EventType { get; set; }
-    public Dictionary<string, Object> Payload { get; set; } = new();
+    public JsonDocument Payload { get; set; }
     public string UserId { get; set; }
 }

@@ -1,18 +1,30 @@
+using System.Text.Json;
+
 namespace Analytics.Domain.Entities;
 
 public class AlertRule
 {
-    // | Campo       | Tipo sugerido          | Descrição                                                                                           |
-    // | ----------- | ---------------------- | --------------------------------------------------------------------------------------------------- |
-    // | `Id`        | `Guid`                 | Identificador único da regra                                                                        |
-    // | `Name`      | `string`               | Nome descritivo da regra de alerta                                                                  |
-    // | `Condition` | `string` (DSL ou JSON) | Regra condicional (ex: "total\_vendas > 1000") — pode ser uma mini-DSL ou JSON com operador e valor |
-    // | `Channels`  | `List<string>`         | Canais de notificação (ex: \["email", "slack", "webhook"])                                          |
-
-    public AlertRule() { }
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Condition { get; set; }
-    public List<string> Channels { get; set; }
-    
+    public string MetricName { get; set; }
+    public JsonDocument Condition { get; set; }
+    public string NotificationUrl { get; set; }
+    public bool IsActive { get; set; }
+    public string TenantId { get; set; }
+    public DateTime CreatedAt { get; set; }
+
+    public AlertRule(string name, string metricName, JsonDocument condition, string notificationUrl, bool isActive, string tenantId)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        MetricName = metricName;
+        Condition = condition;
+        NotificationUrl = notificationUrl;
+        IsActive = isActive;
+        TenantId = tenantId;
+        CreatedAt = DateTime.UtcNow;
+    }
+
+    // Construtor sem parâmetros para EF Core
+    private AlertRule() { }
 }

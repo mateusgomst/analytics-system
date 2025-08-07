@@ -1,5 +1,5 @@
 using Analytics.Domain.Entities;
-using Analytics.Infrastructure.Data;
+using Analytics.Infrastructure.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Analytics.Infrastructure.Context
@@ -18,7 +18,8 @@ namespace Analytics.Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new EventConfiguration());
-        
+            modelBuilder.ApplyConfiguration(new AggregatedMetricConfiguration());
+            modelBuilder.ApplyConfiguration(new AlertRuleConfiguration());
             
             base.OnModelCreating(modelBuilder);
         }
