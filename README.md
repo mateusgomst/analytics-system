@@ -203,11 +203,11 @@ Content-Type: application/json
 **Request Body:**
 ```json
 {
-  "event_type": "page_view",
-  "timestamp": "2025-08-07T17:25:18Z",
-  "user_id": "user_12345",
-  "session_id": "sess_abc123",
-  "payload": {
+  "EventType": "page_view",
+  "Timestamp": "2025-08-07T17:25:18Z",
+  "UserId": "user_12345",
+  "SessionId": "sess_abc123",
+  "Payload": {
     "page": "/produto/smartphone",
     "device": "mobile",
     "referrer": "google",
