@@ -25,6 +25,6 @@ namespace Analytics.Domain.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
-        private AggregatedMetric() { }
+        public AggregatedMetric() { }
     }
 }

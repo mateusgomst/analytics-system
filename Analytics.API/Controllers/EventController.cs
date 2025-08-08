@@ -6,6 +6,7 @@ using Analytics.Application.Repositories;
 using Analytics.Domain.Entities;
 using Analytics.Infrastructure.Messaging;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 
 [ApiController]
 [Route("/api/v1/events")]
@@ -40,14 +41,53 @@ public class EventController : ControllerBase
         {
             return BadRequest(new { error = "Invalid request", details = ex.Message });
         }
-        catch (InvalidOperationException ex)
-        {
-            return StatusCode(503, new { error = "Service unavailable", details = "Message queue is not available" });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = "Internal server error" });
-        }
     }
-   
+
+   [HttpPost("batch")]
+    public async Task<IActionResult> NewEventsBatch([FromBody] EventBatchDto batch, [FromHeader(Name = "X-Tenant-ID")] string tenantId)
+    {
+        var response = new EventBatchResponseDto
+        {
+            TotalEvents = batch.Events.Count,
+            Accepted = 0,
+            Rejected = 0,
+            BatchId = Guid.NewGuid().ToString(),
+            ProcessedAt = DateTime.UtcNow,
+            Message = "Batch processed"
+        };
+
+        foreach (var eventDto in batch.Events.Take(100))
+        {
+            try
+            {
+                Event newEvent = new Event(
+                    eventDto.EventType,
+                    eventDto.Payload,
+                    eventDto.UserId,
+                    eventDto.Timestamp,
+                    eventDto.SessionId,
+                    tenantId);
+
+                await _messageBus.PublishAsync(QueueNames.Events, newEvent);
+                response.Accepted++;
+            }
+            catch (Exception)
+            {
+                response.Rejected++;
+            }
+        }
+
+        var exceeded = batch.Events.Count - 100;
+        if (exceeded > 0)
+        {
+            response.Rejected += exceeded; 
+            response.Message = "All events processed successfully, but only the first 100 were accepted. The remaining events were rejected for exceeding the limit of 100 events per request.";
+        }
+        else if (response.Rejected > 0)
+        {
+            response.Message = "Some events were not accepted due to processing errors.";
+        }
+
+        return Accepted(response);
+    }
 }

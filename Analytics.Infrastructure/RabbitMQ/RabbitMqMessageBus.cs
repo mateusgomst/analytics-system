@@ -20,43 +20,42 @@ namespace Analytics.Infrastructure.Messaging
         public async Task PublishAsync<T>(string queueName, T message)
         {
             if (string.IsNullOrWhiteSpace(queueName))
-                throw new ArgumentException("Queue name cannot be null or empty", nameof(queueName));
+            {
+                _logger.LogWarning("Queue name cannot be null or empty");
+                return;
+            }
 
             if (message == null)
-                throw new ArgumentNullException(nameof(message), "Message cannot be null");
+            {
+                _logger.LogWarning("Message cannot be null");
+                return;
+            }
 
             if (!_connection.IsOpen)
-                throw new InvalidOperationException("RabbitMQ connection is not open");
+            {
+                _logger.LogError("RabbitMQ connection is not open");
+                return;
+            }
 
             try
             {
                 using var channel = await _connection.CreateChannelAsync();
-                
-                // Declara a fila se não existir
-                await channel.QueueDeclareAsync(
-                    queue: queueName, 
-                    durable: true, 
-                    exclusive: false, 
-                    autoDelete: false);
-
-                // Serializa e converte para bytes
+                await channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, autoDelete: false);
                 var json = JsonSerializer.Serialize(message);
                 var body = Encoding.UTF8.GetBytes(json);
-                
-                // Configura propriedades da mensagem para persistência
+
                 var properties = new BasicProperties
                 {
                     Persistent = true,
                     ContentType = "application/json",
                     DeliveryMode = DeliveryModes.Persistent
                 };
-                
-                // Publica a mensagem
+
                 await channel.BasicPublishAsync(
-                    exchange: "", 
-                    routingKey: queueName, 
+                    exchange: "",
+                    routingKey: queueName,
                     mandatory: false,
-                    basicProperties: properties, 
+                    basicProperties: properties,
                     body: body);
 
                 _logger.LogInformation("Message published to queue {QueueName}", queueName);
@@ -64,7 +63,7 @@ namespace Analytics.Infrastructure.Messaging
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error publishing message to queue {QueueName}", queueName);
-                throw new InvalidOperationException($"Failed to publish message to queue {queueName}", ex);
+                // Não lança exceção!
             }
         }
     }

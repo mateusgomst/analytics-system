@@ -27,5 +27,5 @@ public class Event
         CreatedAt = DateTime.UtcNow;
     }
 
-    private Event() { }
+    public Event() { }
 }

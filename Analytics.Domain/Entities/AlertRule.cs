@@ -26,5 +26,5 @@ public class AlertRule
     }
 
     // Construtor sem parâmetros para EF Core
-    private AlertRule() { }
+    public AlertRule() { }
 }
