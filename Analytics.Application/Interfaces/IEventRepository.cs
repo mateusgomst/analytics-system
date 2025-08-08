@@ -6,7 +6,7 @@ namespace Analytics.Application.Repositories;
 
 public interface IEventRepository
 {
-    Task<Event> NewEvent(EventDto eventDto);
+    Task<Event> NewEvent(Event newEvent);
     Task<List<Event>> GetAllEvents();
 
 }

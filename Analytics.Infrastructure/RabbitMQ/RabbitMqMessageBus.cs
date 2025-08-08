@@ -13,12 +13,21 @@ namespace Analytics.Infrastructure.Messaging
 
         public RabbitMqMessageBus(IConnection connection, ILogger<RabbitMqMessageBus> logger)
         {
-            _connection = connection;
-            _logger = logger;
+            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task PublishAsync<T>(string queueName, T message)
         {
+            if (string.IsNullOrWhiteSpace(queueName))
+                throw new ArgumentException("Queue name cannot be null or empty", nameof(queueName));
+
+            if (message == null)
+                throw new ArgumentNullException(nameof(message), "Message cannot be null");
+
+            if (!_connection.IsOpen)
+                throw new InvalidOperationException("RabbitMQ connection is not open");
+
             try
             {
                 using var channel = await _connection.CreateChannelAsync();
@@ -50,12 +59,12 @@ namespace Analytics.Infrastructure.Messaging
                     basicProperties: properties, 
                     body: body);
 
-                _logger.LogInformation("Message published to queue {QueueName}: {Message}", queueName, json);
+                _logger.LogInformation("Message published to queue {QueueName}", queueName);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error publishing message to queue {QueueName}", queueName);
-                throw;
+                throw new InvalidOperationException($"Failed to publish message to queue {queueName}", ex);
             }
         }
     }

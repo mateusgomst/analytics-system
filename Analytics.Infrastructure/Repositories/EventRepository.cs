@@ -14,9 +14,8 @@ public class EventRepository : IEventRepository
         _context = context;
     }
     
-    public async Task<Event> NewEvent(EventDto eventDto)
+    public async Task<Event> NewEvent(Event newEvent)
     {
-        Event newEvent = new Event(eventDto.EventType, eventDto.Payload, eventDto.UserId);
         await _context.Events.AddAsync(newEvent);
         await _context.SaveChangesAsync();
         return newEvent;

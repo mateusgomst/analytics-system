@@ -1,6 +1,7 @@
 using Analytics.Application.Constants;
 using Analytics.Application.DTOs;
 using Analytics.Application.Repositories;
+using Analytics.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -38,7 +39,7 @@ namespace Analytics.API.Services
 
                 try
                 {
-                    var evento = JsonSerializer.Deserialize<EventDto>(json);
+                    var evento = JsonSerializer.Deserialize<Event>(json);
                     if (evento != null)
                     {
                         using var scope = _serviceProvider.CreateScope();

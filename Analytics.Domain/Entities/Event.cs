@@ -15,11 +15,11 @@ public class Event
     public string TenantId { get; set; }
     public DateTime CreatedAt { get; set; }
 
-    public Event(string eventType, JsonDocument payload, string userId, string sessionId = null, string tenantId = null)
+    public Event(string eventType, JsonDocument payload, string userId, DateTime? timestamp = null, string sessionId = null, string tenantId = null)
     {
         Id = Guid.NewGuid();
         EventType = eventType;
-        Timestamp = DateTime.UtcNow;
+        Timestamp = timestamp ?? DateTime.UtcNow; 
         Payload = payload;
         UserId = userId;
         SessionId = sessionId ?? string.Empty;
