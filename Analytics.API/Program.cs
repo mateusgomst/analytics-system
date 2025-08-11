@@ -56,6 +56,7 @@ builder.Services.AddSingleton<IMessageBus, RabbitMqMessageBus>();
 
 // 6. Registro do BackgroundService (EventConsumerService)
 builder.Services.AddHostedService<EventConsumerService>();
+builder.Services.AddScoped<AnalyticsService>(); 
 
 // --- Fim da Configuração RabbitMQ ---
 
