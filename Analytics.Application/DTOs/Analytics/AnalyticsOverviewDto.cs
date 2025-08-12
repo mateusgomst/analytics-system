@@ -20,8 +20,8 @@ public class ResumoDto
     public int TotalPageViews { get; set; }
     public int UsuariosUnicos { get; set; }
     public int SessoesUnicas { get; set; }
-    public double MediaPaginasPorSessao { get; set; }
-    public double DuracaoMediaSessaoMinutos { get; set; }
+    public int MediaPaginasPorSessao { get; set; }
+    public int DuracaoMediaSessaoMinutos { get; set; }
     public double TaxaRejeicaoPercent { get; set; }
 }
 

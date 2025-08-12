@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Analytics.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,13 +13,13 @@ public class AnalyticsController : ControllerBase
     }
 
     [HttpGet("overview")]
-    public IActionResult GetAnalyticsOverview(
+    public async Task<IActionResult> GetAnalyticsOverview(
         [FromQuery] DateTime start_date,
         [FromQuery] DateTime end_date,
         [FromQuery] string? device = null,
         [FromQuery] string? country = null)
     {
-        var overview = _analyticsService.GetAnalyticsOverview();
+        var overview = await _analyticsService.GetAnalyticsOverview(start_date, end_date, device, country);
         return Ok(overview);
     }
 }
