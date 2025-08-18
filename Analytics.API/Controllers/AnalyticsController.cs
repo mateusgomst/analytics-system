@@ -14,12 +14,31 @@ public class AnalyticsController : ControllerBase
 
     [HttpGet("overview")]
     public async Task<IActionResult> GetAnalyticsOverview(
-        [FromQuery] DateTime start_date,
-        [FromQuery] DateTime end_date,
+        [FromQuery] string start_date,
+        [FromQuery] string end_date,
         [FromQuery] string? device = null,
         [FromQuery] string? country = null)
     {
-        var overview = await _analyticsService.GetAnalyticsOverview(start_date, end_date, device, country);
-        return Ok(overview);
+        try
+        {
+            var startDate = DateTime.SpecifyKind(
+                DateTime.ParseExact(start_date, "dd/MM/yyyy", null),
+                DateTimeKind.Utc
+            );
+            var endDate = DateTime.SpecifyKind(
+                DateTime.ParseExact(end_date, "dd/MM/yyyy", null),
+                DateTimeKind.Utc
+            );
+            var overview = await _analyticsService.GetAnalyticsOverview(
+                startDate,
+                endDate,
+                device,
+                country);
+            return Ok(overview);
+        }
+        catch (FormatException)
+        {
+            return BadRequest("Formato de data inválido. Use dd/MM/yyyy.");
+        }
     }
 }

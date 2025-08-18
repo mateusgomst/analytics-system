@@ -34,6 +34,7 @@ builder.Services.AddSingleton<IConnectionFactory>(sp =>
     };
 });
 
+builder.Services.AddMemoryCache();
 // 3. Registro da classe RabbitMQConnection (que gerencia a IConnection)
 // A conexão será estabelecida no construtor de RabbitMQConnection.
 builder.Services.AddSingleton<RabbitMQConnection>();
